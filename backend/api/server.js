@@ -1,17 +1,25 @@
 const express = require("express");
-const helmet = require("helmet");
-const cors = require("cors")
+const middleware = require("./middlewareConfig.js");
 
-const server = express();
+// routers import
+const rolesRouter = require("./roles/router.js")
+const usersRouter = require("./users/router.js");
+const ticketsRouter = require("./tickets/router.js");
+const categoriesRouter = require("./categories/router.js");
+const notesRouter = require("./notes/router.js");
 
 // middleware
-server.use(express.json());
-server.use(cors());
-server.use(helmet());
+const server = express();
+middleware(server)
 
-// routes
-server.get("/", (req, res) => {
-    res.json({ api: "up" });
-})
+// routes utilization
+server.get("/api", (req, res) => {
+  res.json({ api: "up" });
+});
+server.use("/roles", rolesRouter)
+server.use("/users", usersRouter)
+server.use("/tickets", ticketsRouter)
+server.use("/categories", categoriesRouter)
+server.use("/notes", notesRouter)
 
 module.exports = server;
