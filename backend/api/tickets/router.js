@@ -1,10 +1,10 @@
 const express = require("express");
 
-const router = express();
+const router = require("express").Router();
 
 // routes
 router.get("/", (req, res) => {
-  res.json({ tickets: "up" });
+  res.json({ router: "tickets" });
 });
 
 module.exports = router;

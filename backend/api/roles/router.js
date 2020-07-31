@@ -1,10 +1,7 @@
-const express = require("express");
+const router = require("express").Router();
 
-const router = express();
-
-// routes
 router.get("/", (req, res) => {
-  res.json({ roles: "up" });
+  res.json({ router: "roles" });
 });
 
 module.exports = router;

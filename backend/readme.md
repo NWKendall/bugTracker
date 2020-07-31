@@ -80,3 +80,11 @@
 |View Ticket's Notes|GET|/api/tickets/:id/notes|
 |Update Notes|PUT|/api/notes/:id|
 |Delete Note|DEL|/api/notes/:id|
+
+
+
+
+## Testing
+
+- functions: invoke the function with optional arguements
+- 

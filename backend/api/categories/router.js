@@ -1,10 +1,7 @@
-const express = require("express");
+const router = require("express").Router();
 
-const router = express();
-
-// routes
 router.get("/", (req, res) => {
-  res.json({ categories: "up" });
+  res.status(200).json({ router: "categories" });
 });
 
 module.exports = router;

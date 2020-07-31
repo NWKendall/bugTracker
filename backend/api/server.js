@@ -16,10 +16,10 @@ middleware(server)
 server.get("/api", (req, res) => {
   res.json({ api: "up" });
 });
-server.use("/roles", rolesRouter)
-server.use("/users", usersRouter)
-server.use("/tickets", ticketsRouter)
-server.use("/categories", categoriesRouter)
-server.use("/notes", notesRouter)
+server.use("/api/roles", rolesRouter)
+server.use("/api/users", usersRouter)
+server.use("/api/tickets", ticketsRouter)
+server.use("/api/categories", categoriesRouter)
+server.use("/api/notes", notesRouter)
 
 module.exports = server;
