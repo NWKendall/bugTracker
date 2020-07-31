@@ -1,6 +1,7 @@
 const request = require("supertest");
 
 const server = require("../server.js");
+const { expectCt } = require("helmet");
 
 describe("Notes Test", function () {
   it("should run tests", function () {
@@ -15,12 +16,11 @@ describe("Notes Test", function () {
           expect(res.status).toBe(200);
         });
     });
-    it("should return notes as the router value", function () {
-      return request(server)
-        .get("/api/notes")
-        .then((res) => {
-          expect(res.body.router).toBe("notes");
-        });
+
+    it("should return notes as the router value", async function () {
+      const res = await request(server).get("/api/notes");
+      expect(res.body.router).toBe("notes");
+      expect(res.type).toMatch(/json/)
     });
   });
 });
