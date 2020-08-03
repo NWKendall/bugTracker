@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    height: 40vh;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid pink;
+}

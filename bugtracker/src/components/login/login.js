@@ -1,5 +1,9 @@
 import React from "react";
+// import { Link, NavLink } from 'react-router-dom';
+
 import { useForm } from "react-hook-form";
+
+import './login.styles.css';
 
 const Login = () => {
   const { register, handleSubmit, watch, errors } = useForm();
@@ -8,8 +12,8 @@ const Login = () => {
   console.log("errors:", errors);
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className="container">
+      <form className="form" onSubmit={handleSubmit(onSubmit)}>
         <input
           type="email"
           name="email"
@@ -28,6 +32,7 @@ const Login = () => {
         <input type="submit" />
         {errors.password && <p>{errors.password.message}</p>}
       </form>
+
     </div>
   );
 }

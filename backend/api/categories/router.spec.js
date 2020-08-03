@@ -11,16 +11,16 @@ describe("Categories Test", function () {
     it("should return status 200 OK", function () {
       return request(server)
         .get("/api/categories")
-        .then((res) => {
-          expect(res.status).toBe(200);
+        .then((r) => {
+          expect(r.status).toBe(200);
         });
     });
 
-    it("should return categories as the router value", function () {
+    it("should return array of categories", function () {
       return request(server)
         .get("/api/categories")
-        .then((res) => {
-          expect(res.body.router).toBe("categories");
+        .then((r) => {
+          expect(Array.isArray(r)).toBe(true);
         });
     });
   });
