@@ -8,7 +8,7 @@ const ticketsRouter = require("./tickets/router.js");
 const categoriesRouter = require("./categories/router.js");
 const notesRouter = require("./notes/router.js");
 
-// middleware
+// apply middleware
 const server = express();
 middleware(server)
 

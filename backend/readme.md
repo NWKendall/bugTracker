@@ -1,5 +1,5 @@
 
-[DB Design]("https://app.dbdesigner.net/designer/schema/309981")
+[DB Design]("https://dbdesigner.page.link/FNCqKX4MJfZ8tFEu5")
 
 # Features
 
