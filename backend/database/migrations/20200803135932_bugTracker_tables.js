@@ -11,7 +11,7 @@ exports.up = function (knex) {
       tbl.increments("id");
       tbl.string("first_name", 255).notNullable().index();
       tbl.string("last_name", 255).notNullable().index();
-      tbl.string("email", 255).notNullable().index();
+      tbl.string("email", 255).notNullable().unique().index();
       tbl.string("password", 255).notNullable();
       tbl
         .integer("role_id")
@@ -20,7 +20,7 @@ exports.up = function (knex) {
         .references("id")
         .inTable("roles")
         .onUpdate("CASCADE")
-        .onDELETE("RESTRICT");
+        .onDelete("RESTRICT");
       tbl.timestamp("created_at").defaultTo(knex.fn.now());
       tbl.timestamp("modified_at").defaultTo(knex.fn.now());
       tbl.timestamp("deleted_at").defaultTo(knex.fn.now());
@@ -33,7 +33,7 @@ exports.up = function (knex) {
         .references("id")
         .inTable("roles")
         .onUpdate("CASCADE")
-        .onDELETE("RESTRICT");
+        .onDelete("RESTRICT");
       tbl
         .integer("user_id")
         .unsigned()
@@ -41,7 +41,7 @@ exports.up = function (knex) {
         .references("id")
         .inTable("users")
         .onUpdate("CASCADE")
-        .onDELETE("RESTRICT");
+        .onDelete("RESTRICT");
     })
     .createTable("categories", (tbl) => {
       tbl.increments("id");
@@ -62,7 +62,7 @@ exports.up = function (knex) {
         .references("id")
         .inTable("users")
         .onUpdate("CASCADE")
-        .onDELETE("RESTRICT");
+        .onDelete("RESTRICT");
       tbl.timestamp("created_at").defaultTo(knex.fn.now());
       tbl.timestamp("modified_at").defaultTo(knex.fn.now());
       tbl.timestamp("deleted_at").defaultTo(knex.fn.now());
@@ -78,7 +78,7 @@ exports.up = function (knex) {
         .references("id")
         .inTable("tickets")
         .onUpdate("CASCADE")
-        .onDELETE("RESTRICT");
+        .onDelete("RESTRICT");
       tbl
         .integer("user_id")
         .unsigned()
@@ -86,7 +86,7 @@ exports.up = function (knex) {
         .references("id")
         .inTable("users")
         .onUpdate("CASCADE")
-        .onDELETE("RESTRICT");
+        .onDelete("RESTRICT");
       tbl.boolean("voted").defaultTo(false).index();
     })
     .createTable("images", (tbl) => {
@@ -109,7 +109,7 @@ exports.up = function (knex) {
         .references("id")
         .inTable("tickets")
         .onUpdate("CASCADE")
-        .onDELETE("RESTRICT");
+        .onDelete("RESTRICT");
       tbl
         .integer("user_id")
         .unsigned()
@@ -117,7 +117,7 @@ exports.up = function (knex) {
         .references("id")
         .inTable("users")
         .onUpdate("CASCADE")
-        .onDELETE("RESTRICT")
+        .onDelete("RESTRICT");
     tbl.timestamp("created_at").defaultTo(knex.fn.now())
     tbl.timestamp("modified_at").defaultTo(knex.fn.now())
     tbl.timestamp("deleted_at").defaultTo(knex.fn.now())
@@ -130,12 +130,12 @@ exports.up = function (knex) {
 exports.down = function (knex) {
   return knex.schema
     .dropTableIfExists("roles")
-    .knex.schema.dropTableIfExists("users")
-    .knex.schema.dropTableIfExists("user_roles")
-    .knex.schema.dropTableIfExists("categories")
-    .knex.schema.dropTableIfExists("tickets")
-    .knex.schema.dropTableIfExists("votes")
-    .knex.schema.dropTableIfExists("images")
-    .knex.schema.dropTableIfExists("notes");
+    .dropTableIfExists("users")
+    .dropTableIfExists("user_roles")
+    .dropTableIfExists("categories")
+    .dropTableIfExists("tickets")
+    .dropTableIfExists("votes")
+    .dropTableIfExists("images")
+    .dropTableIfExists("notes");
 
 };

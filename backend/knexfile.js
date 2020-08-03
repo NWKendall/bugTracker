@@ -1,9 +1,17 @@
 // Update with your config settings.
+require("dotenv").config();
 
 module.exports = {
   development: {
     client: 'pg',
-    connection: "postgresql://localhost/dev",
+    useNullAsDefault: true,
+    connection: {
+      host: "127.0.0.1",
+      port: "5432",
+      user: "postgres",
+      password: process.env.DB_PASSWORD,
+      database: 'bugTracker_Dev'
+    },
     pool: {
       min: 2,
       max: 10
@@ -13,10 +21,16 @@ module.exports = {
       tableName: 'knex_migrations'
     }
   },
-
   testing: {
     client: 'pg',
-    connection: "postgresql://localhost/testing",
+    useNullAsDefault: true,
+    connection: {
+      host: "127.0.0.1",
+      port: "5432",
+      user: "postgres",
+      password: process.env.DB_PASSWORD,
+      database: 'bugTracker_Test'
+    },
     pool: {
       min: 2,
       max: 10
