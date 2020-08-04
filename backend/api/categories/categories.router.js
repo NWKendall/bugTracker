@@ -12,6 +12,18 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+
+  Categories.getCategoryById(id)
+    .then((cat) => {
+      res.status(200).json(cat);
+    })
+    .catch(({ name, message, code, stack }) => {
+      res.status(500).json({ name, message, code, stack });
+    });
+});
+
 router.post("/", (req, res) => {
   const category = req.body;
   Categories.addCategory(category)
