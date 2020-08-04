@@ -14,4 +14,15 @@ router.get("/", (req, res) => {
     });
 });
 
+router.post("/", (req, res) => {
+  const category = req.body
+  Categories.addCategory(category)
+  .then((cat) => {
+      res.status(201).json(cat);
+    })
+    .catch(({ name, message, code, stack }) => {
+      res.status(500).json({ name, message, code, stack });
+    });
+});
+
 module.exports = router;

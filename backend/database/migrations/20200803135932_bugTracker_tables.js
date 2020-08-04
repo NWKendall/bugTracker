@@ -1,14 +1,14 @@
 exports.up = function (knex) {
   return knex.schema
     .createTable("roles", (tbl) => {
-      tbl.increments("id");
+      tbl.increments();
       tbl.string("role_name", 255).notNullable().unique().index();
       tbl.timestamp("created_at").defaultTo(knex.fn.now());
-      tbl.timestamp("modified_at").defaultTo(knex.fn.now());
-      tbl.timestamp("deleted_at").defaultTo(knex.fn.now());
+      tbl.timestamp("modified_at");
+      tbl.timestamp("deleted_at");
     })
     .createTable("users", (tbl) => {
-      tbl.increments("id");
+      tbl.increments();
       tbl.string("first_name", 255).notNullable().index();
       tbl.string("last_name", 255).notNullable().index();
       tbl.string("email", 255).notNullable().unique().index();
@@ -22,8 +22,8 @@ exports.up = function (knex) {
         .onUpdate("CASCADE")
         .onDelete("RESTRICT");
       tbl.timestamp("created_at").defaultTo(knex.fn.now());
-      tbl.timestamp("modified_at").defaultTo(knex.fn.now());
-      tbl.timestamp("deleted_at").defaultTo(knex.fn.now());
+      tbl.timestamp("modified_at");
+      tbl.timestamp("deleted_at");
     })
     .createTable("user_roles", (tbl) => {
       tbl
@@ -44,14 +44,14 @@ exports.up = function (knex) {
         .onDelete("RESTRICT");
     })
     .createTable("categories", (tbl) => {
-      tbl.increments("id");
+      tbl.increments();
       tbl.string("category_name", 255).notNullable().unique().index();
       tbl.timestamp("created_at").defaultTo(knex.fn.now());
-      tbl.timestamp("modified_at").defaultTo(knex.fn.now());
-      tbl.timestamp("deleted_at").defaultTo(knex.fn.now());
+      tbl.timestamp("modified_at");
+      tbl.timestamp("deleted_at");
     })
     .createTable("tickets", (tbl) => {
-      tbl.increments("id");
+      tbl.increments();
       tbl.string("subject", 255).notNullable().index();
       tbl.string("category", 255).notNullable().index();
       tbl.string("description", 255).notNullable().index();
@@ -64,8 +64,8 @@ exports.up = function (knex) {
         .onUpdate("CASCADE")
         .onDelete("RESTRICT");
       tbl.timestamp("created_at").defaultTo(knex.fn.now());
-      tbl.timestamp("modified_at").defaultTo(knex.fn.now());
-      tbl.timestamp("deleted_at").defaultTo(knex.fn.now());
+      tbl.timestamp("modified_at");
+      tbl.timestamp("deleted_at");
       tbl.timestamp("started").defaultTo(null);
       tbl.timestamp("ended").defaultTo(null);
       tbl.boolean("resolved").defaultTo(false);
@@ -90,7 +90,7 @@ exports.up = function (knex) {
       tbl.boolean("voted").defaultTo(false).index();
     })
     .createTable("images", (tbl) => {
-      tbl.increments("id");
+      tbl.increments();
       tbl
         .integer("ticket_id")
         .unsigned()
@@ -101,8 +101,8 @@ exports.up = function (knex) {
       tbl.string("image", 255);
     })
     .createTable("notes", (tbl) => {
-        tbl.increments("id")
-        tbl
+      tbl.increments();
+      tbl
         .integer("ticket_id")
         .unsigned()
         .notNullable()
@@ -118,24 +118,21 @@ exports.up = function (knex) {
         .inTable("users")
         .onUpdate("CASCADE")
         .onDelete("RESTRICT");
-    tbl.timestamp("created_at").defaultTo(knex.fn.now())
-    tbl.timestamp("modified_at").defaultTo(knex.fn.now())
-    tbl.timestamp("deleted_at").defaultTo(knex.fn.now())
-    tbl.string("notes", 255).notNullable()
-
-
-    })
+      tbl.timestamp("created_at").defaultTo(knex.fn.now());
+      tbl.timestamp("modified_at");
+      tbl.timestamp("deleted_at");
+      tbl.string("notes", 255).notNullable();
+    });
 };
 
 exports.down = function (knex) {
   return knex.schema
-    .dropTableIfExists("roles")
-    .dropTableIfExists("users")
-    .dropTableIfExists("user_roles")
-    .dropTableIfExists("categories")
-    .dropTableIfExists("tickets")
-    .dropTableIfExists("votes")
+    .dropTableIfExists("notes")
     .dropTableIfExists("images")
-    .dropTableIfExists("notes");
-
+    .dropTableIfExists("votes")
+    .dropTableIfExists("tickets")
+    .dropTableIfExists("categories")
+    .dropTableIfExists("user_roles")
+    .dropTableIfExists("users")
+    .dropTableIfExists("roles");
 };
