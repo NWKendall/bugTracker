@@ -7,7 +7,7 @@ module.exports = {
 }
 
 function findAll() {
-    return db("categories").select('*')
+    return db("categories")
 }
 
 function getCategoryById(id){
