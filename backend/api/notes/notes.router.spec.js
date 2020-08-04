@@ -1,7 +1,6 @@
 const request = require("supertest");
 
 const server = require("../server.js");
-const { expectCt } = require("helmet");
 
 describe("Notes Test", function () {
   it("should run tests", function () {

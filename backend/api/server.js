@@ -2,11 +2,11 @@ const express = require("express");
 const middleware = require("./middlewareConfig.js");
 
 // routers import
-const rolesRouter = require("./roles/router.js")
-const usersRouter = require("./users/router.js");
-const ticketsRouter = require("./tickets/router.js");
-const categoriesRouter = require("./categories/router.js");
-const notesRouter = require("./notes/router.js");
+const rolesRouter = require("./roles/roles.router.js")
+const usersRouter = require("./users/users.router.js");
+const ticketsRouter = require("./tickets/tickets.router.js");
+const categoriesRouter = require("./categories/categories.router.js");
+const notesRouter = require("./notes/notes.router.js");
 
 // apply middleware
 const server = express();
