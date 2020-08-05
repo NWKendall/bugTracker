@@ -47,6 +47,7 @@ describe("Categories Test", function () {
       const response = await request(server)
         .post("/api/categories")
         .send(testPost);
+        
         postId = await response.body.id
 
       await expect(response.status).toEqual(statusCode);

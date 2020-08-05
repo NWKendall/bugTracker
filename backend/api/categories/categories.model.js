@@ -12,6 +12,15 @@ module.exports = {
 function findAllCategories() {
   return db("categories");
 }
+
+async function getUserRole(user_id){
+  await db("user_roles").select(["role_id"]).where({user_id})
+}
+
+async function addUserRole(role){
+  return db("roles").insert(role, "role_name")
+}
+
 function getCategoryByName(category) {
   return db("categories").select("*").where(category).first();
 }
