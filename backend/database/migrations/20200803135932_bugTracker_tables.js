@@ -13,33 +13,25 @@ exports.up = function (knex) {
       tbl.string("last_name", 255).notNullable().index();
       tbl.string("email", 255).notNullable().unique().index();
       tbl.string("password", 255).notNullable();
-      tbl
-        .integer("role_id")
-        .unsigned()
-        .notNullable()
-        .references("id")
-        .inTable("roles")
-        .onUpdate("CASCADE")
-        .onDelete("RESTRICT");
       tbl.timestamp("created_at").defaultTo(knex.fn.now());
       tbl.timestamp("modified_at");
       tbl.timestamp("deleted_at");
     })
     .createTable("user_roles", (tbl) => {
       tbl
-        .integer("role_id")
-        .unsigned()
-        .notNullable()
-        .references("id")
-        .inTable("roles")
-        .onUpdate("CASCADE")
-        .onDelete("RESTRICT");
-      tbl
         .integer("user_id")
         .unsigned()
         .notNullable()
         .references("id")
         .inTable("users")
+        .onUpdate("CASCADE")
+        .onDelete("RESTRICT");
+      tbl
+        .integer("role_id")
+        .unsigned()
+        .notNullable()
+        .references("id")
+        .inTable("roles")
         .onUpdate("CASCADE")
         .onDelete("RESTRICT");
     })
