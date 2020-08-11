@@ -5,7 +5,7 @@ module.exports = {
   getUserById,
   registerUser,
   addUserRole,
-  userLogin,
+  getUser,
 };
 
 function getAllUsers() {
@@ -22,8 +22,8 @@ async function registerUser(user) {
   return getUserById(id);
 }
 
-function userLogin(email) {
-  return db("users").where(email)
+function getUser(user) {
+  return db("users").select("*").where(user).first()
 }
 
 // ROLES
