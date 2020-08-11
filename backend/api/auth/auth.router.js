@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const Secret = require("../../config/secret.js");
+const generateToken = require("./generateToken.js");
 const router = require("express").Router();
 
 const UsersDB = require("./auth.model.js");
@@ -23,32 +22,40 @@ router.post("/register", (req, res) => {
 
   UsersDB.registerUser({ first_name, last_name, password, email })
     .then((user) => {
+      const id = user.id;
       UsersDB.addUserRole(user.id, role)
         .then((roles) => {
           console.log("roles:", roles);
 
-          res.status(201).json({first_name, last_name, password, email, roles});
+          res
+            .status(201)
+            .json({ id, first_name, last_name, password, email, roles });
         })
 
         .catch(({ name, code, message, stack }) => {
           res.status(500).json({ name, code, message, stack });
         });
-
     })
     .catch(({ name, code, message, stack }) => {
       res.status(500).json({ name, code, message, stack });
     });
 });
 
-/*
+router.post("/login", (req, res) => {
+  let { email, password } = req.body;
 
-/POST register
-
-/POST login
-
-
-
-
-*/
+  UsersDB.userLogin({email}).first()
+    .then((user) => {
+      if(user && bcrypt.compareSync(password, user.password)){
+        const token = generateToken(user);
+        res.status(200).json({message: `Welcome ${user.first_name}!`, token });
+      } else {
+        res.status(401).json({ error: "Invalid Credentials" })
+      }
+    })
+    .catch(({ name, code, message, stack }) => {
+      res.status(500).json({ name, code, message, stack });
+    });
+});
 
 module.exports = router;

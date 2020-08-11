@@ -5,6 +5,7 @@ module.exports = {
   getUserById,
   registerUser,
   addUserRole,
+  userLogin,
 };
 
 function getAllUsers() {
@@ -21,11 +22,13 @@ async function registerUser(user) {
   return getUserById(id);
 }
 
+function userLogin(email) {
+  return db("users").where(email)
+}
+
 // ROLES
 
-async function getAllUserRoles(id) {
-    console.log("GET ROLES", id)
-
+function getAllUserRoles(id) {
   return db("roles as r")
     .select("role_name")
     .join("user_roles as ur", "ur.role_id", "r.id")
@@ -36,8 +39,7 @@ async function addUserRole(user_id, role_id )  {
     console.log("ADD USER ROLES:", user_id, role_id)
   await db("user_roles").insert({user_id, role_id});
   return getAllUserRoles(user_id);
-  // add fields to user_roles
-  // return array of all roles
+
 }
 
 /*
