@@ -10,8 +10,8 @@ const notesRouter = require("./notes/notes.router.js");
 
 router.use("/roles", rolesRouter);
 router.use("/users", usersRouter);
-router.use("/", ticketsRouter);
 router.use("/categories", categoriesRouter);
-router.use("/notes", notesRouter);
+router.use("/", ticketsRouter, notesRouter);
+// router.use("/", notesRouter);
 
 module.exports = router

@@ -113,7 +113,7 @@ exports.up = function (knex) {
       tbl.timestamp("created_at").defaultTo(knex.fn.now());
       tbl.timestamp("modified_at");
       tbl.timestamp("deleted_at");
-      tbl.string("notes", 255).notNullable();
+      tbl.string("note", 255).notNullable();
     });
 };
 
