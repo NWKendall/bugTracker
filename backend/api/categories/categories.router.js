@@ -36,12 +36,13 @@ router.post("/", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
+  req.body.modified_at = new Date()
   const { id } = req.params;
   const changes = { ...req.body };
 
   Categories.updateCategory(id, changes)
-    .then((cat) => {
-      res.status(204).json(cat);
+  .then( (cat) => {
+      res.status(200).json(cat);
     })
     .catch(({ name, message, code, stack }) => {
       res.status(500).json({ name, message, code, stack });
