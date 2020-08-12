@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const Secret = require("../../config/secret.js");
+const { JWTSecret } = require("../../config/secret.js");
 
 function generateToken(user){
     const payload = {
@@ -7,14 +7,13 @@ function generateToken(user){
         first_name: user.first_name
     }
 
-    const jwtSecret = Secret.JWTSecret
-
     const options = {
-        expiresIn: "8h"
+        expiresIn: '8h'
     }
 
-    return jwt.sign(payload, jwtSecret, options)
+    return jwt.sign(payload, JWTSecret, options)
 }
 
-
 module.exports = generateToken
+
+// Explore more opions from JWT

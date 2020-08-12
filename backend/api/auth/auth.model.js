@@ -1,11 +1,12 @@
 const db = require("../../database/connection.js");
+const { addUserRole } = require("../roles/roles.model.js")
 
 module.exports = {
   getAllUsers,
   getUserById,
   registerUser,
   addUserRole,
-  userLogin,
+  getUser,
 };
 
 function getAllUsers() {
@@ -22,25 +23,24 @@ async function registerUser(user) {
   return getUserById(id);
 }
 
-function userLogin(email) {
-  return db("users").where(email)
+function getUser(user) {
+  return db("users").select("*").where(user).first()
 }
 
-// ROLES
+// // ROLES
 
-function getAllUserRoles(id) {
-  return db("roles as r")
-    .select("role_name")
-    .join("user_roles as ur", "ur.role_id", "r.id")
-    .where("ur.user_id",  id);
-}
+// function getAllUserRoles(id) {
+//   return db("roles as r")
+//     .select("role_name")
+//     .join("user_roles as ur", "ur.role_id", "r.id")
+//     .where("ur.user_id",  id);
+// }
 
-async function addUserRole(user_id, role_id )  {
-    console.log("ADD USER ROLES:", user_id, role_id)
-  await db("user_roles").insert({user_id, role_id});
-  return getAllUserRoles(user_id);
+// async function addUserRole(user_id, role_id )  {
+//   await db("user_roles").insert({user_id, role_id});
+//   return getAllUserRoles(user_id);
 
-}
+// }
 
 /*
 Get users

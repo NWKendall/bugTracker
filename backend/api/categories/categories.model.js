@@ -27,6 +27,7 @@ async function addCategory(category) {
 }
 
 async function updateCategory(id, changes) {
+  console.log({ changes })
   await db("categories").where({ id }).update(changes);
 
   return getCategoryById(id);
