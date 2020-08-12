@@ -1,6 +1,8 @@
 
 [DB Design]("https://dbdesigner.page.link/FNCqKX4MJfZ8tFEu5")
 
+[TRELLO]("https://trello.com/b/dyw0n1Cj/%F0%9F%90%9Btracker")
+
 # Features
 
 - list of roles
@@ -31,21 +33,27 @@
 - staff
 - user
 
+
+## Authentication
+|Feaure|Method|URL|
+|:--|:--|:--|
+|Add User|POST|/api/auth/register|
+|Login|POST|/api/auth/loign|
+
 ## Users
 
 |Feaure|Method|URL|
 |:--|:--|:--|
 |List Users|GET|/api/users|
-|Add User|POST|/api/users|
 |View User|GET|/api/users/:id|
 |Update User|PUT|/api/users/:id|
 |Delete User|DEL|/api/users/:id|
 
-- id
-- name
-- email
-- password
-- roles
+- id = int
+- name = str
+- email = str
+- password = str
+- roles = []
 
 
 ## Tickets
