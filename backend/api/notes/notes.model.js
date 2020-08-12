@@ -25,6 +25,7 @@ async function getNotesByTicketId(id) {
 }
 
 async function addNote(note){
+    console.log("add", note)
     await db("notes").insert(note);
     return getNotesByTicketId(note.ticket_id);
 }
@@ -38,6 +39,6 @@ async function editNote(id, changes) {
 async function deleteNote(id){
     await db("notes").where({id}).delete()
 
-    return "NOTE DELETED"
-}
+    return `Successfully Deleted Note# ${id}`
 
+}

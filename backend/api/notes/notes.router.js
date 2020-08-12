@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const NotesDB = require("./notes.model.js");
+const { noteValidator, ticketValidator } = require("./notes.MW.js");
 
 /*
 Middleware needs to:
@@ -20,7 +21,7 @@ router.get("/notes", (req, res) => {
 });
 
 // GET specific note
-router.get("/notes/:id", (req, res) => {
+router.get("/notes/:id", noteValidator, (req, res) => {
   const { id } = req.params;
   NotesDB.getNoteByNoteId(id)
     .then((note) => {
@@ -34,7 +35,6 @@ router.get("/notes/:id", (req, res) => {
 // GET all notes per ticket
 router.get("/:id/notes", (req, res) => {
   const { id } = req.params;
-  console.log(1, {id})
 
   NotesDB.getNotesByTicketId(id)
     .then((notes) => {
@@ -46,7 +46,7 @@ router.get("/:id/notes", (req, res) => {
 });
 
 // Post note to ticket id
-router.post("/:id/notes", (req, res) => {
+router.post("/:id/notes", ticketValidator, (req, res) => {
   const { id } = req.params;
   const newNote = { ...req.body, ticket_id: Number(id) };
 
@@ -63,7 +63,7 @@ router.post("/:id/notes", (req, res) => {
 });
 
 // PUT specific note
-router.put("/notes/:id", (req, res) => {
+router.put("/notes/:id", noteValidator, (req, res) => {
   const { id } = req.params;
   const changes = req.body;
   NotesDB.editNote(id, changes)
@@ -76,7 +76,7 @@ router.put("/notes/:id", (req, res) => {
 });
 
 // DELETE specific note
-router.delete("/notes/:id", (req, res) => {
+router.delete("/notes/:id", noteValidator, (req, res) => {
   const { id } = req.params;
   NotesDB.deleteNote(id)
     .then((note) => {

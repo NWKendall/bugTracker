@@ -16,6 +16,9 @@
 - list of notes
     - CRUD
 
+## TODO
+- ticketValidation on tickets and notes
+- validation on promises?
 
 
 
