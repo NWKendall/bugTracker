@@ -42,7 +42,7 @@ async function deleteRole(id) {
 // USER ROLES - with seeded data
 function getAllUserRoles(id) {
   return db("roles as r")
-    .select("role_name")
+    .select("name")
     .join("user_roles as ur", "ur.role_id", "r.id")
     .where("ur.user_id", id);
 }

@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const TicketsDB = require("./tickets.model.js");
+const { ticketValidator } = require("../middleware/tickets.mw.js");
+
 
 // GET all Tickets across users
 router.get("/tickets", (req, res) => {
@@ -53,7 +55,8 @@ router.get("/tickets/:id", (req, res) => {
 });
 
 // UPDATE ticket by ticket ID
-router.put("/tickets/:id", (req, res) => {
+router.put("/tickets/:id", ticketValidator, (req, res) => {
+  req.body.modified_at = new Date()
   const { id } = req.params;
   const changes = { ...req.body, id };
 

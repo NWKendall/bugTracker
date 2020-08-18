@@ -1,6 +1,7 @@
-const Categories = require("./categories.model.js");
-
 const router = require("express").Router();
+const Categories = require("./categories.model.js");
+const { categoryValidator } = require("../middleware/categories.mw.js");
+
 
 router.get("/", (req, res) => {
   Categories.findAllCategories()
@@ -12,7 +13,7 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", categoryValidator, (req, res) => {
   const { id } = req.params;
 
   Categories.getCategoryById(id)

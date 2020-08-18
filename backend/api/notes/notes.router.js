@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const NotesDB = require("./notes.model.js");
-const { noteValidator, ticketValidator } = require("../middleware/notes.mw.js");
+const { ticketValidator } = require("../middleware/tickets.mw.js");
+const { noteValidator } = require("../middleware/notes.mw.js");
 
 /*
 Middleware needs to:
@@ -46,7 +47,7 @@ router.get("/:id/notes", (req, res) => {
 });
 
 // Post note to ticket id
-router.post("/:id/notes", ticketValidator, (req, res) => {
+router.post("/:id/notes", (req, res) => {
   const { id } = req.params;
   const newNote = { ...req.body, ticket_id: Number(id) };
 
@@ -66,8 +67,10 @@ router.post("/:id/notes", ticketValidator, (req, res) => {
 
 // PUT specific note
 router.put("/notes/:id", noteValidator, (req, res) => {
+  req.body.modified_at = new Date()
   const { id } = req.params;
   const changes = req.body;
+
   NotesDB.editNote(id, changes)
     .then((note) => {
       res.status(200).json(note);
@@ -78,7 +81,7 @@ router.put("/notes/:id", noteValidator, (req, res) => {
 });
 
 // DELETE specific note
-router.delete("/notes/:id", noteValidator, (req, res) => {
+router.delete("/notes/:id", (req, res) => {
   const { id } = req.params;
   NotesDB.deleteNote(id)
     .then((note) => {
