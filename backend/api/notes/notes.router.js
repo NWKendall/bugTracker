@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const NotesDB = require("./notes.model.js");
-const { noteValidator, ticketValidator } = require("./notes.MW.js");
+const { noteValidator, ticketValidator } = require("../middleware/notes.mw.js");
 
 /*
 Middleware needs to:
@@ -52,6 +52,8 @@ router.post("/:id/notes", ticketValidator, (req, res) => {
 
   NotesDB.getTicketById(id)
     .then((ticket) => {
+      // this is ID of ticket maker, not helper
+      // need to set helper id from user (not URL)
       newNote.user_id = ticket.user_id;
       NotesDB.addNote(newNote).then((note) => {
         res.status(200).json(note);

@@ -1,6 +1,6 @@
 const express = require("express");
-const middleware = require("./middlewareConfig.js");
-const authorizedMW = require("./auth/authorize.mw.js");
+const middleware = require("./middleware/middlewareConfig.js");
+const authorizedMW = require("./middleware/authorized.mw.js");
 
 // routers import
 const apiRouter = require("./api.router.js");
@@ -11,11 +11,7 @@ const server = express();
 middleware(server)
 
 // routes utilization
-server.get("/api", (req, res) => {
-  res.json({ api: "up" });
-});
 server.use("/api/auth", authRouter);
 server.use("/api", authorizedMW, apiRouter)
-
 
 module.exports = server;

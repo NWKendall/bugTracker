@@ -1,8 +1,8 @@
-const bcrypt = require("bcryptjs");
-const generateToken = require("./generateToken.js");
 const router = require("express").Router();
-
+const bcrypt = require("bcryptjs");
 const UsersDB = require("./auth.model.js");
+const generateToken = require("./generateToken.js");
+
 
 router.get("/users", (req, res) => {
   UsersDB.getAllUsers()
@@ -17,7 +17,6 @@ router.get("/users", (req, res) => {
 router.post("/register", (req, res) => {
   let { first_name, last_name, password, email, role } = req.body;
   let hash = bcrypt.hashSync(password, 12);
-
   password = hash;
 
   UsersDB.registerUser({ first_name, last_name, password, email })

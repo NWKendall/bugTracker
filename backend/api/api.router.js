@@ -6,12 +6,9 @@ const ticketsRouter = require("./tickets/tickets.router.js");
 const categoriesRouter = require("./categories/categories.router.js");
 const notesRouter = require("./notes/notes.router.js");
 
-
-
 router.use("/roles", rolesRouter);
 router.use("/users", usersRouter);
 router.use("/categories", categoriesRouter);
 router.use("/", ticketsRouter, notesRouter);
-// router.use("/", notesRouter);
 
 module.exports = router
