@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const NotesDB = require("./notes.model.js");
 const { ticketValidator } = require("../middleware/tickets.mw.js");
-const { noteValidator } = require("../middleware/notes.mw.js");
+const { noteValidator, createNoteValidator } = require("../middleware/notes.mw.js");
 
 /*
 Middleware needs to:
@@ -47,7 +47,7 @@ router.get("/:id/notes", (req, res) => {
 });
 
 // Post note to ticket id
-router.post("/:id/notes", (req, res) => {
+router.post("/:id/notes", createNoteValidator, (req, res) => {
   const { id } = req.params;
   const newNote = { ...req.body, ticket_id: Number(id) };
 

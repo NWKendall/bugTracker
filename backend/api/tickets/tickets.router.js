@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const TicketsDB = require("./tickets.model.js");
-const { ticketValidator } = require("../middleware/tickets.mw.js");
+const { ticketValidator, createTicketValidator } = require("../middleware/tickets.mw.js");
+
+const { userValidator } = require("../middleware/users.mw.js");
 
 
 // GET all Tickets across users
@@ -15,7 +17,7 @@ router.get("/tickets", (req, res) => {
 });
 
 // ADD Ticket per user
-router.post("/:id/tickets", (req, res) => {
+router.post("/:id/tickets",  userValidator, createTicketValidator, (req, res) => {
   const { id } = req.params;
   const newTicket = { ...req.body, user_id: id };
 
@@ -42,7 +44,7 @@ router.get("/:id/tickets", (req, res) => {
 });
 
 // GET ticket by ticket ID
-router.get("/tickets/:id", (req, res) => {
+router.get("/tickets/:id", ticketValidator, (req, res) => {
   const { id } = req.params;
 
   TicketsDB.getTicketById(id)

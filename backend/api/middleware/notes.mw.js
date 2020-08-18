@@ -4,8 +4,10 @@ const {
 
 module.exports = {
   noteValidator,
+  createNoteValidator
 };
 
+// get single and put requests
 async function noteValidator(req, res, next) {
   const { id } = req.params;
   const { note } = req.body;
@@ -22,3 +24,10 @@ async function noteValidator(req, res, next) {
   }
 }
 
+
+async function createNoteValidator(req, res, next) {
+
+  if(!req.body.note) return res.status(400).json({ errorMessages: "Note field is missing", MW: "createNoteValidator" });
+
+  next();
+}

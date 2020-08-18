@@ -17,8 +17,9 @@ function getAllUserTickets(id) {
   return db("tickets").select("*").where("user_id", id);
 }
 
-function getTicketById([id]) {
-  return db("tickets").where({ id }).first();
+function getTicketById(id) {
+  const int_id = parseInt(id)
+  return db("tickets").where("id", int_id).first();
 }
 
 async function addTicket(ticket) {
