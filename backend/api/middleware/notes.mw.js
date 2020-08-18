@@ -12,7 +12,9 @@ async function noteValidator(req, res, next) {
   const { id } = req.params;
   const { note } = req.body;
   const noteCheck = await getNoteByNoteId(id);
+  const ticket_id = noteCheck.ticket_id;
 
+  console.log({ ticket_id })
   if (id) {
     if (!noteCheck) {
       res.status(404).json({ message: `Note ID# ${id} does not exist.` });

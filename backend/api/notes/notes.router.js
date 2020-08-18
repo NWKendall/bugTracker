@@ -1,7 +1,12 @@
 const router = require("express").Router();
 const NotesDB = require("./notes.model.js");
+const UsersDB = require("../users/users.model.js");
+
 const { ticketValidator } = require("../middleware/tickets.mw.js");
-const { noteValidator, createNoteValidator } = require("../middleware/notes.mw.js");
+const {
+  noteValidator,
+  createNoteValidator,
+} = require("../middleware/notes.mw.js");
 
 /*
 Middleware needs to:
@@ -46,20 +51,17 @@ router.get("/:id/notes", (req, res) => {
     });
 });
 
-// Post note to ticket id
+// Post note to ticket id 
 router.post("/:id/notes", createNoteValidator, (req, res) => {
   const { id } = req.params;
-  const newNote = { ...req.body, ticket_id: Number(id) };
+  const user_id = req.decodedToken.subject;
+  const newNote = { ...req.body, ticket_id: id, user_id: user_id };
 
-  NotesDB.getTicketById(id)
-    .then((ticket) => {
-      // this is ID of ticket maker, not helper
-      // need to set helper id from user (not URL)
-      newNote.user_id = ticket.user_id;
-      NotesDB.addNote(newNote).then((note) => {
-        res.status(200).json(note);
-      });
+  NotesDB.addNote(newNote)
+    .then((note) => {
+      res.status(200).json(note);
     })
+
     .catch(({ name, message, stack, code }) => {
       res.status(500).json({ name, message, stack, code });
     });
@@ -67,7 +69,7 @@ router.post("/:id/notes", createNoteValidator, (req, res) => {
 
 // PUT specific note
 router.put("/notes/:id", noteValidator, (req, res) => {
-  req.body.modified_at = new Date()
+  req.body.modified_at = new Date();
   const { id } = req.params;
   const changes = req.body;
 

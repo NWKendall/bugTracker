@@ -20,12 +20,10 @@ function getNoteByNoteId(id) {
 }
 
 async function getNotesByTicketId(id) {
-    console.log(2, {id})
   return db("notes").where("ticket_id", id);
 }
 
 async function addNote(note){
-    console.log("add", note)
     await db("notes").insert(note);
     return getNotesByTicketId(note.ticket_id);
 }

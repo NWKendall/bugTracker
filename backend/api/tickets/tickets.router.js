@@ -17,9 +17,9 @@ router.get("/tickets", (req, res) => {
 });
 
 // ADD Ticket per user
-router.post("/:id/tickets",  userValidator, createTicketValidator, (req, res) => {
-  const { id } = req.params;
-  const newTicket = { ...req.body, user_id: id };
+router.post("/tickets",  userValidator, createTicketValidator, (req, res) => {
+  const user_id = req.decodedToken.subject
+  const newTicket = { ...req.body, user_id: user_id };
 
   TicketsDB.addTicket(newTicket)
     .then((ticket) => {
@@ -31,11 +31,10 @@ router.post("/:id/tickets",  userValidator, createTicketValidator, (req, res) =>
 });
 
 // GET all tickets per user, id = user_id
-router.get("/:id/tickets", (req, res) => {
+router.get("/:id/tickets", userValidator, (req, res) => {
   const { id } = req.params;
   TicketsDB.getAllUserTickets(id)
     .then((tickets) => {
-      console.log(4, { tickets });
       res.status(200).json(tickets);
     })
     .catch(({ name, message, stack, code }) => {
@@ -72,7 +71,7 @@ router.put("/tickets/:id", ticketValidator, (req, res) => {
 });
 
 // DELETE ticket
-router.delete("/tickets/:id", (req, res) => {
+router.delete("/tickets/:id", ticketValidator, (req, res) => {
   const { id } = req.params;
 
   TicketsDB.deleteTicket(id)

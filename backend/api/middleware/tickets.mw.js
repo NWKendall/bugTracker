@@ -1,4 +1,5 @@
 const { getTicketById } = require("../notes/notes.model.js");
+const { getUserById } = require("../users/users.model.js");
 
 module.exports = {
   ticketValidator,
@@ -7,22 +8,29 @@ module.exports = {
 
 // good for edit
 async function ticketValidator(req, res, next) {
-  const  id  = parseInt(req.params.id);
+  const id = parseInt(req.params.id);
   const errorMessages = [];
   const ticketIdCheck = await getTicketById(id);
+  const user_id = ticketIdCheck.user_id;
 
-  if (!ticketIdCheck) return res.status(404).json({ message: `Ticket ID# ${id} does not exist.` });
+  if (!ticketIdCheck)
+    return res
+      .status(404)
+      .json({ message: `Ticket ID# ${id} does not exist.` });
 
-  for (const [key, value] of Object.entries(req.body)){
-    if(!value) errorMessages.push(`${key} field is missing value`)
+  if (!user_id)
+    return res
+      .status(404)
+      .json({ message: `User ID# ${user_id} does not exist.` });
+
+  for (const [key, value] of Object.entries(req.body)) {
+    if (!value) errorMessages.push(`${key} field is missing value`);
   }
 
-  if(errorMessages.length) return res.status(404).json({ errorMessages, 
-    MW: "ticketValidator",
-  });
+  if (errorMessages.length)
+    return res.status(404).json({ errorMessages, MW: "ticketValidator" });
 
   next();
-  
 }
 
 async function createTicketValidator(req, res, next) {
@@ -36,11 +44,7 @@ async function createTicketValidator(req, res, next) {
   });
 
   if (!!errorMessages.length)
-    return res
-      .status(400)
-      .json({ errorMessages, MW: "createTicketValidator" });
+    return res.status(400).json({ errorMessages, MW: "createTicketValidator" });
 
   next();
 }
-
-
