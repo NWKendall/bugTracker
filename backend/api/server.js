@@ -1,5 +1,5 @@
 const express = require("express");
-const middleware = require("./middleware/middlewareConfig.js");
+const globalMiddlewareConfig = require("./middleware/middlewareConfig.js");
 const authorizedMW = require("./middleware/authorized.mw.js");
 
 // routers import
@@ -8,7 +8,7 @@ const authRouter = require("./auth/auth.router.js");
 
 // apply middleware
 const server = express();
-middleware(server)
+globalMiddlewareConfig(server)
 
 // routes utilization
 server.use("/api/auth", authRouter);

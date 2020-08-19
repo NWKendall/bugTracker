@@ -1,4 +1,5 @@
 const UsersDB = require("../auth/auth.model.js");
+const RolesDB = require("../roles/roles.model.js");
 
 module.exports = async(req, res, next) => {
   const emailRegEx = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gim;
@@ -19,6 +20,14 @@ module.exports = async(req, res, next) => {
       if (!value) errorMessages.push("No password provided.");
       if (!passwordRegEx.test(value)) errorMessages.push("Password must contain: 8 characters minimum, one uppercase, one lowercase, 1 digit and 1 special character.");
     }
+
+    if (key === "role") {
+      const role_id = Number(value)
+      const roleCheck = await RolesDB.getRole(role_id)
+      if (!value) errorMessages.push("No role_id provided.");
+      if (!roleCheck) errorMessages.push(`Role ID: ${value}, doesn't exist`);
+    }
+
   }
 
   if (errorMessages.length) return res.status(400).json({errorMessages});

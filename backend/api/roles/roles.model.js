@@ -20,6 +20,8 @@ function getAllRoles() {
 }
 
 function getRole(id) {
+  
+
   return db("roles").select("*").where({ id }).first();
 }
 
@@ -36,6 +38,7 @@ async function editRole(id, changes) {
 }
 
 async function deleteRole(id) {
+  const role_id = parseInt(id)
   return db("roles").where({ id }).delete();
 }
 
