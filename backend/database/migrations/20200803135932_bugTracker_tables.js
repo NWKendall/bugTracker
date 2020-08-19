@@ -47,6 +47,7 @@ exports.up = function (knex) {
       tbl.string("subject", 255).notNullable().index();
       tbl.string("category", 255).notNullable().index();
       tbl.string("description", 255).notNullable().index();
+      tbl.string("tried", 255).notNullable().index();
       tbl
         .integer("user_id")
         .unsigned()

@@ -27,8 +27,9 @@ async function ticketValidator(req, res, next) {
 }
 
 async function createTicketValidator(req, res, next) {
-  const required = ["subject", "category", "description"];
+  const required = ["subject", "category", "description", "tried"];
   const errorMessages = [];
+
 
   required.forEach((field) => {
     if (!(field in req.body) || !req.body[field].toString().length) {

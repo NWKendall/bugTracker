@@ -51,7 +51,7 @@ router.get("/:id/notes", ticketValidator, (req, res) => {
     });
 });
 
-// Post note to ticket id 
+// POST note to ticket id 
 router.post("/:id/notes", createNoteValidator, (req, res) => {
   const { id } = req.params;
   const user_id = req.decodedToken.subject;

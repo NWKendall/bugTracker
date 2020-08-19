@@ -5,7 +5,7 @@ const { ticketValidator, createTicketValidator } = require("../middleware/ticket
 const { userValidator } = require("../middleware/users.mw.js");
 
 
-// GET all Tickets across users
+// GET all Tickets across users open and closed
 router.get("/tickets", (req, res) => {
   TicketsDB.getAllTickets()
     .then((tickets) => {
@@ -16,11 +16,31 @@ router.get("/tickets", (req, res) => {
     });
 });
 
-// ADD Ticket per user
-router.post("/tickets",  userValidator, createTicketValidator, (req, res) => {
-  const user_id = req.decodedToken.subject
-  const newTicket = { ...req.body, user_id: user_id };
+router.get("/tickets/closed", (req, res) => {
+  TicketsDB.getAllClosedTickets()
+    .then((tickets) => {
+      res.status(200).json(tickets);
+    })
+    .catch(({ name, message, stack, code }) => {
+      res.status(500).json({ name, message, stack, code });
+    });
+});
 
+router.get("/tickets/open", (req, res) => {
+  TicketsDB.getAllOpenTickets()
+    .then((tickets) => {
+      res.status(200).json(tickets);
+    })
+    .catch(({ name, message, stack, code }) => {
+      res.status(500).json({ name, message, stack, code });
+    });
+});
+
+
+// ADD Ticket per user
+router.post("/tickets", userValidator, createTicketValidator, (req, res) => {
+  const id = req.decodedToken.subject
+  const newTicket = { ...req.body, user_id: id };
   TicketsDB.addTicket(newTicket)
     .then((ticket) => {
       res.status(201).json(ticket);
@@ -62,6 +82,29 @@ router.put("/tickets/:id", ticketValidator, (req, res) => {
   const changes = { ...req.body, id };
 
   TicketsDB.editTicket(id, changes)
+    .then((ticket) => {
+      res.status(200).json(ticket);
+    })
+    .catch(({ name, message, stack, code }) => {
+      res.status(500).json({ name, message, stack, code });
+    });
+});
+
+router.put("/tickets/:id/closed", ticketValidator, (req, res) => {
+  const { id } = req.params;
+  TicketsDB.closeATicket(id)
+    .then((ticket) => {
+      res.status(200).json(ticket);
+    })
+    .catch(({ name, message, stack, code }) => {
+      res.status(500).json({ name, message, stack, code });
+    });
+});
+
+
+router.put("/tickets/:id/open", ticketValidator, (req, res) => {
+  const { id } = req.params;
+  TicketsDB.openATicket(id)
     .then((ticket) => {
       res.status(200).json(ticket);
     })

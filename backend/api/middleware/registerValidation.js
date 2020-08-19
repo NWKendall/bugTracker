@@ -24,8 +24,9 @@ module.exports = async(req, res, next) => {
     if (key === "role") {
       const role_id = Number(value)
       const roleCheck = await RolesDB.getRole(role_id)
-      if (!value) errorMessages.push("No role_id provided.");
-      if (!roleCheck) errorMessages.push(`Role ID: ${value}, doesn't exist`);
+      if(value){
+        if (!roleCheck) errorMessages.push(`Role ID: ${value}, doesn't exist`);
+      } 
     }
 
   }
