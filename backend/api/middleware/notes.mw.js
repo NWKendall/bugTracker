@@ -14,7 +14,6 @@ async function noteValidator(req, res, next) {
   const noteCheck = await getNoteByNoteId(id);
   const ticket_id = noteCheck.ticket_id;
 
-  console.log({ ticket_id })
   if (id) {
     if (!noteCheck) {
       res.status(404).json({ message: `Note ID# ${id} does not exist.` });
@@ -27,7 +26,7 @@ async function noteValidator(req, res, next) {
 }
 
 
-async function createNoteValidator(req, res, next) {
+function createNoteValidator(req, res, next) {
 
   if(!req.body.note) return res.status(400).json({ errorMessages: "Note field is missing", MW: "createNoteValidator" });
 

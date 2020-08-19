@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const NotesDB = require("./notes.model.js");
-const UsersDB = require("../users/users.model.js");
 
 const { ticketValidator } = require("../middleware/tickets.mw.js");
 const {
@@ -29,6 +28,7 @@ router.get("/notes", (req, res) => {
 // GET specific note
 router.get("/notes/:id", noteValidator, (req, res) => {
   const { id } = req.params;
+  
   NotesDB.getNoteByNoteId(id)
     .then((note) => {
       res.status(200).json(note);
@@ -39,7 +39,7 @@ router.get("/notes/:id", noteValidator, (req, res) => {
 });
 
 // GET all notes per ticket
-router.get("/:id/notes", (req, res) => {
+router.get("/:id/notes", ticketValidator, (req, res) => {
   const { id } = req.params;
 
   NotesDB.getNotesByTicketId(id)
@@ -83,7 +83,7 @@ router.put("/notes/:id", noteValidator, (req, res) => {
 });
 
 // DELETE specific note
-router.delete("/notes/:id", (req, res) => {
+router.delete("/notes/:id", noteValidator, (req, res) => {
   const { id } = req.params;
   NotesDB.deleteNote(id)
     .then((note) => {

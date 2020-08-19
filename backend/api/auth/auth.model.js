@@ -7,6 +7,7 @@ module.exports = {
   registerUser,
   addUserRole,
   getUser,
+  getUserByEmail
 };
 
 function getAllUsers() {
@@ -25,6 +26,10 @@ async function registerUser(user) {
 
 function getUser(user) {
   return db("users").select("*").where(user).first()
+}
+
+function getUserByEmail(email) {
+  return db("users").where("email", email).first()
 }
 
 // // ROLES
