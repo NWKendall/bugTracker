@@ -37,7 +37,7 @@ exports.up = function (knex) {
     })
     .createTable("categories", (tbl) => {
       tbl.increments();
-      tbl.string("name", 255).notNullable().unique().index();
+      tbl.string("category", 255).notNullable().unique().index();
       tbl.timestamp("created_at").defaultTo(knex.fn.now());
       tbl.timestamp("modified_at");
       tbl.timestamp("deleted_at");
@@ -45,7 +45,14 @@ exports.up = function (knex) {
     .createTable("tickets", (tbl) => {
       tbl.increments();
       tbl.string("subject", 255).notNullable().index();
-      tbl.string("category", 255).notNullable().index();
+      tbl     
+        .integer("category_id")
+        .unsigned()
+        .notNullable()
+        .references("id")
+        .inTable("categories")
+        .onUpdate("CASCADE")
+        .onDelete("RESTRICT");
       tbl.string("description", 255).notNullable().index();
       tbl.string("tried", 255).notNullable().index();
       tbl

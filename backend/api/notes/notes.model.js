@@ -21,19 +21,19 @@ function getNoteByNoteId(id) {
 }
 
 async function getNotesByTicketId(id) {
-  const notes = await db("notes").where("ticket_id", id);
-
-  return notes;
+  return db("notes").where("ticket_id", id);
 }
 
 async function addNote(note) {
   await db("notes").insert(note);
-
+  
   const ticket_id = note.ticket_id;
   const allNotes = await getNotesByTicketId(ticket_id);
 
   if (allNotes.length == 1)
-    await db("tickets").where("id", ticket_id).update({ started: new Date() });
+    await db("tickets")
+      .where("id", ticket_id)
+      .update({ started: new Date() });
 
   const newNote = allNotes.length -1  
 

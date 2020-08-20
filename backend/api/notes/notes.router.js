@@ -11,7 +11,6 @@ const {
 Middleware needs to:
   check if note exists
   check for ticket id  
-  validate staff or admin role
 */
 
 // GET all notes for all tickets

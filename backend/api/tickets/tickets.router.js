@@ -38,7 +38,7 @@ router.get("/tickets/open", (req, res) => {
 
 
 // ADD Ticket per user
-router.post("/tickets", userValidator, createTicketValidator, (req, res) => {
+router.post("/tickets", createTicketValidator, (req, res) => {
   const id = req.decodedToken.subject
   const newTicket = { ...req.body, user_id: id };
   TicketsDB.addTicket(newTicket)

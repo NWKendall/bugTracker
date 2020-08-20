@@ -27,9 +27,13 @@
 - ticket endpoint to handle resolved (that way less to do FE) ✅
 - get all open tickets ✅
 - get all closed tickets ✅
+- note user check Mw - user_id and ticket_user-id are not the same, unless admin
 08/20
 - testing 😭
+- aws training at 1pm
 
+### INCLUDING
+- middleware that validates user's role
 
 
 

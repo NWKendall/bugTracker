@@ -14,8 +14,8 @@ module.exports = {
 
 // for when id is before resource (user direct)
 async function userValidator (req, res, next) {
-    const id = req.decodedToken.subject
-    console.log(id)
+    const { id } = req.params;
+
     const userCheck = await getUserById(id)
 
     if(!userCheck) return res.status(404).json({ errorMessages: `User: ${id} does not exist`, MW: "userValidator"})

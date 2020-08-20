@@ -10,7 +10,7 @@ module.exports = {
   closeATicket,
   openATicket,
   getAllOpenTickets,
-  getAllClosedTickets
+  getAllClosedTickets,
 };
 
 function getAllTickets() {
@@ -18,20 +18,29 @@ function getAllTickets() {
 }
 
 function getAllOpenTickets() {
-  return db("tickets").where("resolved", false);
+  return db("tickets as t")
+    .join("categories as c", "c.id", "t.category_id")
+    .where("resolved", false);
 }
 
 function getAllClosedTickets() {
-  return db("tickets").where("resolved", true);
+  return db("tickets as t")
+    .join("categories as c", "c.id", "t.category_id")
+    .where("resolved", true);
 }
 
 function getAllUserTickets(id) {
-  return db("tickets").select("*").where("user_id", id);
+  return db("tickets as t")
+    .join("categories as c", "c.id", "t.category_id")
+    .where("t.user_id", id);
 }
 
-function getTicketById(id) {
+async function getTicketById(id) {
   const int_id = parseInt(id);
-  return db("tickets").select("*").where("id", int_id).first();
+  return db("tickets as t")
+    .join("categories as c", "c.id", "t.category_id")
+    .where("t.id", int_id)
+    .first();
 }
 
 async function addTicket(ticket) {
@@ -58,9 +67,7 @@ async function closeATicket(id) {
 }
 
 async function openATicket(id) {
-  await db("tickets")
-    .where({ id })
-    .update({ resolved: false, ended: null });
+  await db("tickets").where({ id }).update({ resolved: false, ended: null });
 
   return getTicketById(id);
 }
