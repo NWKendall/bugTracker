@@ -6,7 +6,7 @@ const { userValidator } = require("../middleware/users.mw.js");
 
 
 // GET all Tickets across users open and closed
-router.get("/tickets", (req, res) => {
+router.get("/tickets", userValidator, (req, res) => {
   TicketsDB.getAllTickets()
     .then((tickets) => {
       res.status(200).json(tickets);
@@ -16,7 +16,7 @@ router.get("/tickets", (req, res) => {
     });
 });
 
-router.get("/tickets/closed", (req, res) => {
+router.get("/tickets/closed", userValidator, (req, res) => {
   TicketsDB.getAllClosedTickets()
     .then((tickets) => {
       res.status(200).json(tickets);
@@ -26,7 +26,7 @@ router.get("/tickets/closed", (req, res) => {
     });
 });
 
-router.get("/tickets/open", (req, res) => {
+router.get("/tickets/open", userValidator, (req, res) => {
   TicketsDB.getAllOpenTickets()
     .then((tickets) => {
       res.status(200).json(tickets);
@@ -38,7 +38,7 @@ router.get("/tickets/open", (req, res) => {
 
 
 // ADD Ticket per user
-router.post("/tickets", createTicketValidator, (req, res) => {
+router.post("/tickets", userValidator, createTicketValidator, (req, res) => {
   const id = req.decodedToken.subject
   const newTicket = { ...req.body, user_id: id };
   TicketsDB.addTicket(newTicket)

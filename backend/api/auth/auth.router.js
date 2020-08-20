@@ -33,9 +33,10 @@ router.post("/register", registerValidation, (req, res) => {
 router.post("/login", loginValidation, (req, res) => {
   let { email, password } = req.body;
 
-  UsersDB.getUser({ email })
+  UsersDB.getUserByEmail(email)
     .then((user) => {
       if (user && bcrypt.compareSync(password, user.password)) {
+        console.log({user})
         const token = generateToken(user);
         res.status(200).json({ message: `Welcome ${user.first_name}!`, token });
       } else {

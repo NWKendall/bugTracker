@@ -1,25 +1,33 @@
-// note and ticket user_id check
-// getuser _id from BE
-// check it's user type
-// staff or admin (2 | 3) for notes
-// users for tickets (1)
-
-
 const { getUserById } = require("../users/users.model.js");
 
-
 module.exports = {
+    userIdValidator,
     userValidator
 }
 
-// for when id is before resource (user direct)
+// checks user exists and is authorized to access
 async function userValidator (req, res, next) {
-    const { id } = req.params;
 
-    const userCheck = await getUserById(id)
-
-    if(!userCheck) return res.status(404).json({ errorMessages: `User: ${id} does not exist`, MW: "userValidator"})
+    let paramId;
+    const tokenId = parseInt(req.decodedToken.subject);
+    console.log(req.decodedToken)
+    
+    if(req.params.id) {
+        paramId = parseInt(req.params.id);
+        if (paramId != tokenId) 
+            return res.status(401).json({ errorMessages: `You do not have permission to access this content`, MW: "userValidator"})
+    }
 
     next()
 }
 
+async function userIdValidator (req, res, next) {
+
+    const tokenId = parseInt(req.decodedToken.subject);
+    const userCheck = await getUserById(tokenId)
+    
+    if(!userCheck) 
+        return res.status(404).json({ errorMessages: `User: ${tokenId} does not exist`, MW: "userValidator"})
+
+    next()
+}

@@ -1,13 +1,15 @@
 const db = require("../../database/connection.js");
-const { addUserRole } = require("../roles/roles.model.js")
+const { addUserRole, getAllUserRoles } = require("../roles/roles.model.js")
 
 module.exports = {
   getAllUsers,
   getUserById,
   registerUser,
-  addUserRole,
   getUser,
-  getUserByEmail
+  getUserByEmail,
+  
+  addUserRole,
+  getAllUserRoles
 };
 
 function getAllUsers() {
@@ -29,7 +31,7 @@ function getUser(user) {
 }
 
 function getUserByEmail(email) {
-  return db("users").where("email", email).first()
+  return db("users").where({email}).first()
 }
 
 // // ROLES
