@@ -5,7 +5,6 @@ const generateToken = require("./generateToken.js");
 const registerValidation = require("../middleware/registerValidation.js");
 const loginValidation = require("../middleware/loginValidation.js");
 
-
 router.post("/register", registerValidation, (req, res) => {
   let { first_name, last_name, password, email, role } = req.body;
   let hash = bcrypt.hashSync(password, 12);
@@ -34,11 +33,14 @@ router.post("/login", loginValidation, (req, res) => {
   let { email, password } = req.body;
 
   UsersDB.getUserByEmail(email)
-    .then((user) => {
+    .then(async (user) => {
       if (user && bcrypt.compareSync(password, user.password)) {
-        console.log({user})
+        let roles = await UsersDB.getAllUserRoles(user.id);
+
+        user.roles = roles.map(role => role.name);
         const token = generateToken(user);
         res.status(200).json({ message: `Welcome ${user.first_name}!`, token });
+
       } else {
         res.status(401).json({ error: "Invalid Credentials" });
       }
@@ -49,4 +51,3 @@ router.post("/login", loginValidation, (req, res) => {
 });
 
 module.exports = router;
-

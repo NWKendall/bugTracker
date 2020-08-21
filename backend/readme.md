@@ -29,14 +29,15 @@
 08/20
 - link categories to tickets (FK) ✅
 - aws training at 1pm ✅
-- note user check Mw - user_id and ticket_user-id are not the same, unless admin
-- user.id === ticket.user_id
-- ticket.id === note.ticket_id
+- **have roles included in user token** ✅
 
 ### INCLUDING
-- testing 😭
+- note user check Mw - user_id and ticket_user-id are not the same, unless admin
 - middleware that validates user's role
     - need role_id in token for
+- user.id === ticket.user_id
+- ticket.id === note.ticket_id
+- testing 😭
 
 
 

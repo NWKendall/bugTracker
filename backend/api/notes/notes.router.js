@@ -4,7 +4,9 @@ const NotesDB = require("./notes.model.js");
 const { ticketValidator } = require("../middleware/tickets.mw.js");
 const {
   noteValidator,
+  notesValidator,
   createNoteValidator,
+  editNoteValidator
 } = require("../middleware/notes.mw.js");
 
 /*
@@ -38,7 +40,7 @@ router.get("/notes/:id", noteValidator, (req, res) => {
 });
 
 // GET all notes per ticket
-router.get("/:id/notes", ticketValidator, (req, res) => {
+router.get("/:id/notes", notesValidator, (req, res) => {
   const { id } = req.params;
 
   NotesDB.getNotesByTicketId(id)
@@ -56,6 +58,8 @@ router.post("/:id/notes", createNoteValidator, (req, res) => {
   const user_id = req.decodedToken.subject;
   const newNote = { ...req.body, ticket_id: id, user_id: user_id };
 
+  console.log({ newNote })
+
   NotesDB.addNote(newNote)
     .then((note) => {
       res.status(200).json(note);
@@ -67,7 +71,7 @@ router.post("/:id/notes", createNoteValidator, (req, res) => {
 });
 
 // PUT specific note
-router.put("/notes/:id", noteValidator, (req, res) => {
+router.put("/notes/:id", noteValidator, editNoteValidator, (req, res) => {
   req.body.modified_at = new Date();
   const { id } = req.params;
   const changes = req.body;
