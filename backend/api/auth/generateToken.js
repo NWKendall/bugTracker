@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const { JWTSecret } = require("../../config/secret.js");
 
 function generateToken(user){
-    console.log("TOKEN", {user})
     const payload = {
         subject: user.id,
         first_name: user.first_name,

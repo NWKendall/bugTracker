@@ -1,19 +1,12 @@
 const router = require("express").Router();
 const NotesDB = require("./notes.model.js");
 
-const { ticketValidator } = require("../middleware/tickets.mw.js");
 const {
   noteValidator,
   notesValidator,
   createNoteValidator,
-  editNoteValidator
+  editNoteValidator,
 } = require("../middleware/notes.mw.js");
-
-/*
-Middleware needs to:
-  check if note exists
-  check for ticket id  
-*/
 
 // GET all notes for all tickets
 router.get("/notes", (req, res) => {
@@ -29,7 +22,7 @@ router.get("/notes", (req, res) => {
 // GET specific note
 router.get("/notes/:id", noteValidator, (req, res) => {
   const { id } = req.params;
-  
+
   NotesDB.getNoteByNoteId(id)
     .then((note) => {
       res.status(200).json(note);
@@ -52,13 +45,11 @@ router.get("/:id/notes", notesValidator, (req, res) => {
     });
 });
 
-// POST note to ticket id 
+// POST note to ticket id
 router.post("/:id/notes", createNoteValidator, (req, res) => {
   const { id } = req.params;
   const user_id = req.decodedToken.subject;
   const newNote = { ...req.body, ticket_id: id, user_id: user_id };
-
-  console.log({ newNote })
 
   NotesDB.addNote(newNote)
     .then((note) => {

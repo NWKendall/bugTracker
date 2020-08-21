@@ -1,46 +1,56 @@
 const db = require("../../database/connection.js");
+const { getCategoryById } = require("../categories/categories.model.js");
 
 module.exports = {
   getAllTickets,
-  addTicket,
   getAllUserTickets,
-  getTicketById,
-  editTicket,
-  deleteTicket,
-  closeATicket,
-  openATicket,
   getAllOpenTickets,
   getAllClosedTickets,
+  getTicketById,
+  editTicket,
+  closeATicket,
+  openATicket,
+  deleteTicket,
+  addTicket,
 };
 
+function callTicketDB() {
+  return db("tickets as t")
+    .select(
+      "t.id",
+      "t.user_id",
+      "t.subject",
+      "t.category_id",
+      "c.category",
+      "t.description",
+      "t.tried",
+      "t.created_at",
+      "t.modified_at",
+      "t.started",
+      "t.resolved",
+      "t.ended"
+    )
+    .join("categories as c", "t.category_id", "c.id");
+}
+
 function getAllTickets() {
-  return db("tickets");
+  return callTicketDB();
 }
 
 function getAllOpenTickets() {
-  return db("tickets as t")
-    .join("categories as c", "c.id", "t.category_id")
-    .where("resolved", false);
+  return callTicketDB().where("resolved", false);
 }
 
 function getAllClosedTickets() {
-  return db("tickets as t")
-    .join("categories as c", "c.id", "t.category_id")
-    .where("resolved", true);
+  return callTicketDB().where("resolved", true);
 }
 
 function getAllUserTickets(id) {
-  return db("tickets as t")
-    .join("categories as c", "c.id", "t.category_id")
-    .where("t.user_id", id);
+  return callTicketDB().where("t.user_id ", id);
 }
 
-async function getTicketById(id) {
-  const int_id = parseInt(id);
-  return db("tickets as t")
-    .join("categories as c", "c.id", "t.category_id")
-    .where("t.id", int_id)
-    .first();
+function getTicketById(id) {
+  return callTicketDB().where("t.id ", id).first();
 }
 
 async function addTicket(ticket) {
@@ -50,7 +60,10 @@ async function addTicket(ticket) {
 }
 
 async function editTicket(id, changes) {
-  await db("tickets").where({ id }).update(changes);
+  await db("tickets")
+    .where({ id })
+    .update({ modified_at: new Date(), ...changes });
+
   return getTicketById(id);
 }
 

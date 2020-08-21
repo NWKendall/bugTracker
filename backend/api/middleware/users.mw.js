@@ -10,7 +10,6 @@ async function userValidator (req, res, next) {
 
     let paramId;
     const tokenId = parseInt(req.decodedToken.subject);
-    console.log(req.decodedToken)
     
     if(req.params.id) {
         paramId = parseInt(req.params.id);

@@ -8,7 +8,7 @@ module.exports = {
   noteValidator,
   notesValidator,
   createNoteValidator,
-  editNoteValidator
+  editNoteValidator,
 };
 
 // checks to see note exists
@@ -27,7 +27,7 @@ async function notesValidator(req, res, next) {
   const ticket_id = parseInt(req.params.id);
   const noteCheck = await getNotesByTicketId(ticket_id);
 
-  if (noteCheck.length === 0)
+  if (!noteCheck.length)
     return res
       .status(404)
       .json({ message: `No notes have been created for ticket ${ticket_id}.` });
@@ -78,13 +78,16 @@ async function createNoteValidator(req, res, next) {
 async function editNoteValidator(req, res, next) {
   const { id } = req.params;
   const changes = req.body;
+  const originalNote = await getNoteByNoteId(id);
 
-  const originalNote = await getNoteByNoteId(id)
-  
-  if(changes.note === originalNote.note) return res.status(400).json({ errorMessages: "Changes must be different from original note.", MW: "editNoteValidator"})
+  if (changes.note === originalNote.note)
+    return res
+      .status(400)
+      .json({
+        errorMessages:
+          "Changes must be different from original note or it's previous version.",
+        MW: "editNoteValidator",
+      });
 
-  next()
-  
-  
+  next();
 }
-// NOTE UPDATE
