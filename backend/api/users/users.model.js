@@ -1,5 +1,5 @@
 const db = require("../../database/connection.js");
-const { deleteUserRoles } = require("../roles/roles.model.js")
+const { deleteUserRoles, getAllUserRoles } = require("../roles/roles.model.js")
 const { getAllUserTickets, addTicket } = require("../tickets/tickets.model.js")
 
 module.exports = {
@@ -8,7 +8,9 @@ module.exports = {
     editUser,
     removeUser,
     getAllUserTickets, 
-    addTicket
+    addTicket,
+    getAllUserRoles
+
 }
 
 function getUsers(){

@@ -4,8 +4,16 @@ const UsersDB = require("./users.model.js");
 // GET all Users (no roles)
 router.get("/", (req, res) => {
   UsersDB.getUsers()
-    .then((users) => {
-      res.status(200).json(users);
+    .then(async (users) => {
+      let allUsersWithRoles = [];
+
+      await Promise.all(users.map(async (user) => {
+        user.roles = await UsersDB.getAllUserRoles(user.id)
+
+        allUsersWithRoles.push(user)
+      }));
+
+      res.status(200).json(allUsersWithRoles);
     })
     .catch(({ name, message, stack, code }) => {
       res.status(500).json({ name, message, stack, code });
@@ -16,8 +24,10 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   UsersDB.getUserById(id)
-    .then((users) => {
-      res.status(200).json(users);
+    .then(async (user) => {
+      user.roles = await UsersDB.getAllUserRoles(id)
+        res.status(200).json(user);
+    
     })
     .catch(({ name, message, stack, code }) => {
       res.status(500).json({ name, message, stack, code });
@@ -49,6 +59,5 @@ router.delete("/:id", (req, res) => {
       res.status(500).json({ name, message, stack, code });
     });
 });
-
 
 module.exports = router;

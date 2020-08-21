@@ -20,6 +20,8 @@ function getAllRoles() {
 }
 
 function getRole(id) {
+  
+
   return db("roles").select("*").where({ id }).first();
 }
 
@@ -36,13 +38,14 @@ async function editRole(id, changes) {
 }
 
 async function deleteRole(id) {
+  const role_id = parseInt(id)
   return db("roles").where({ id }).delete();
 }
 
 // USER ROLES - with seeded data
 function getAllUserRoles(id) {
   return db("roles as r")
-    .select("role_name")
+    .select("id", "name")
     .join("user_roles as ur", "ur.role_id", "r.id")
     .where("ur.user_id", id);
 }

@@ -1,13 +1,12 @@
 const router = require("express").Router();
 const NotesDB = require("./notes.model.js");
-const { noteValidator, ticketValidator } = require("./notes.MW.js");
 
-/*
-Middleware needs to:
-  check if note exists
-  check for ticket id  
-  validate staff or admin role
-*/
+const {
+  noteValidator,
+  notesValidator,
+  createNoteValidator,
+  editNoteValidator,
+} = require("../middleware/notes.mw.js");
 
 // GET all notes for all tickets
 router.get("/notes", (req, res) => {
@@ -23,6 +22,7 @@ router.get("/notes", (req, res) => {
 // GET specific note
 router.get("/notes/:id", noteValidator, (req, res) => {
   const { id } = req.params;
+
   NotesDB.getNoteByNoteId(id)
     .then((note) => {
       res.status(200).json(note);
@@ -33,7 +33,7 @@ router.get("/notes/:id", noteValidator, (req, res) => {
 });
 
 // GET all notes per ticket
-router.get("/:id/notes", (req, res) => {
+router.get("/:id/notes", notesValidator, (req, res) => {
   const { id } = req.params;
 
   NotesDB.getNotesByTicketId(id)
@@ -45,27 +45,28 @@ router.get("/:id/notes", (req, res) => {
     });
 });
 
-// Post note to ticket id
-router.post("/:id/notes", ticketValidator, (req, res) => {
+// POST note to ticket id
+router.post("/:id/notes", createNoteValidator, (req, res) => {
   const { id } = req.params;
-  const newNote = { ...req.body, ticket_id: Number(id) };
+  const user_id = req.decodedToken.subject;
+  const newNote = { ...req.body, ticket_id: id, user_id: user_id };
 
-  NotesDB.getTicketById(id)
-    .then((ticket) => {
-      newNote.user_id = ticket.user_id;
-      NotesDB.addNote(newNote).then((note) => {
-        res.status(200).json(note);
-      });
+  NotesDB.addNote(newNote)
+    .then((note) => {
+      res.status(200).json(note);
     })
+
     .catch(({ name, message, stack, code }) => {
       res.status(500).json({ name, message, stack, code });
     });
 });
 
 // PUT specific note
-router.put("/notes/:id", noteValidator, (req, res) => {
+router.put("/notes/:id", noteValidator, editNoteValidator, (req, res) => {
+  req.body.modified_at = new Date();
   const { id } = req.params;
   const changes = req.body;
+
   NotesDB.editNote(id, changes)
     .then((note) => {
       res.status(200).json(note);

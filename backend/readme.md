@@ -3,23 +3,47 @@
 
 [TRELLO]("https://trello.com/b/dyw0n1Cj/%F0%9F%90%9Btracker")
 
-# Features
 
-- list of roles
-    - CRUD
-- list of users
-    - CRUD
-- list of tickets
-    - CRUD
-- list of categories
-    - CRUD
-- list of notes
-    - CRUD
-
+<br></br>
 ## TODO
-- ticketValidation on tickets and notes
-- validation on promises?
+- 08/18
+    - ticketValidation on tickets and notes ✅
+    - validation on promises? ✅
+- 08/19
+    - include tried in tickets table ✅
+    - ticket started linked to first note creation ✅
+    - ticket endpoint to handle resolved (that way less to do FE) ✅
+    - get all open tickets ✅
+    - get all closed tickets ✅
+- 08/20
+    - link categories to tickets (FK) ✅
+    - aws training at 1pm ✅
+    - **have roles included in user token** ✅
+- 08/21
+    - middleware that validates user's role
+        - need role_id in token for ✅
+    - user.id === ticket.user_id ✅
+    - ticket.id === note.ticket_id ✅
+        - note user check Mw - user_id and ticket_user-id are not the same, unless admin
+### OUTSTANDING
+- testing 😭
 
+<br></br>
+
+
+### TESTING Seeds
+
+|Resources|auth|roles|users|tickets|categories|notes|DONE|
+|:--|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|auth||✅||||||
+|roles|||||||
+|users||✅||||||
+|tickets||✅|✅||✅|||
+|categories||||||||
+|notes|||✅|✅||||
+
+
+<br></br>
 
 
 ## Roles
@@ -36,13 +60,13 @@
 - staff
 - user
 
-
+<br></br>
 ## Authentication
 |Feaure|Method|URL|
 |:--|:--|:--|
 |Add User|POST|/api/auth/register|
 |Login|POST|/api/auth/loign|
-
+<br></br>
 ## Users
 
 |Feaure|Method|URL|
@@ -58,7 +82,7 @@
 - password = str
 - roles = []
 
-
+<br></br>
 ## Tickets
 
 |Feaure|Method|URL|
@@ -68,7 +92,7 @@
 |View User's tickets|GET|/api/users/:id/tickets|
 |Update Ticket|PUT|/api/tickets/:id|
 |Delete Ticket|DEL|/api/tickets/:id|
-
+<br></br>
 ## Categories
 
 |Feaure|Method|URL|

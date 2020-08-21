@@ -1,14 +1,15 @@
 const db = require("../../database/connection.js");
-const { getTicketById } = require("../tickets/tickets.model.js");
+const { getTicketById, editTicket } = require("../tickets/tickets.model.js");
 
 module.exports = {
   getAllNotes,
   getNotesByTicketId,
   getNoteByNoteId,
   getTicketById,
+  editTicket,
   addNote,
   editNote,
-  deleteNote
+  deleteNote,
 };
 
 function getAllNotes() {
@@ -16,29 +17,37 @@ function getAllNotes() {
 }
 
 function getNoteByNoteId(id) {
-    return db("notes").where({ id }).first();
+  return db("notes").where({ id }).first();
 }
 
 async function getNotesByTicketId(id) {
-    console.log(2, {id})
   return db("notes").where("ticket_id", id);
 }
 
-async function addNote(note){
-    console.log("add", note)
-    await db("notes").insert(note);
-    return getNotesByTicketId(note.ticket_id);
+async function addNote(note) {
+  await db("notes").insert(note);
+  
+  const ticket_id = note.ticket_id;
+  const allNotes = await getNotesByTicketId(ticket_id);
+
+  if (allNotes.length == 1)
+    await db("tickets")
+      .where("id", ticket_id)
+      .update({ started: new Date() });
+
+  const newNote = allNotes.length -1  
+
+  return allNotes[newNote];
 }
 
 async function editNote(id, changes) {
-    await db("notes").where({id}).update(changes)
+  await db("notes").where({ id }).update(changes);
 
-    return getNoteByNoteId(id)
+  return getNoteByNoteId(id);
 }
 
-async function deleteNote(id){
-    await db("notes").where({id}).delete()
+async function deleteNote(id) {
+  await db("notes").where({ id }).delete();
 
-    return `Successfully Deleted Note# ${id}`
-
+  return `Successfully Deleted Note# ${id}`;
 }

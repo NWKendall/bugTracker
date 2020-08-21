@@ -12,6 +12,5 @@ router.use("/roles", rolesRouter);
 router.use("/users", usersRouter);
 router.use("/categories", categoriesRouter);
 router.use("/", ticketsRouter, notesRouter);
-// router.use("/", notesRouter);
 
 module.exports = router
